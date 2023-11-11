@@ -11,13 +11,12 @@ module.exports = {
     content_scripts: [
       {
         matches: [
-          'https://*.google.com/*',
-          'https://*.google.com.br/*'
+          "<all_urls>"
         ],
         js: ['content.js']
       }
     ],
-    permissions: ['storage', 'activeTab', 'declarativeContent'],
+    permissions: ['storage', 'activeTab', 'declarativeContent','tabs'],
     action: {
       default_popup: 'index.html'
     },
