@@ -14,8 +14,8 @@ module.exports = {
           "<all_urls>"
         ],
         js: [
-          "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
-          "medium-highlighter.js",
+          // "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
+          // "medium-highlighter.js",
           "content.js",
         ],
       },
