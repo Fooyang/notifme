@@ -29,6 +29,8 @@ module.exports = {
   entry: {
     main: "./src/main.js",
     background: "./src/background.js",
+    // mediumHighlighter: "./src/medium-highlighter.js",
     content: "./src/content.js",
+
   },
 };
