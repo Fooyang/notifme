@@ -5,6 +5,7 @@
     <template v-if="domIsReady">
       <SearchTerm class="app__search-term" :tabId="tabId"/>
       <SetGoogleBackground :tabId="tabId"/>
+      <button :></button>
     </template>
 
     <h2 v-else class="app__title"> Loading...</h2>
