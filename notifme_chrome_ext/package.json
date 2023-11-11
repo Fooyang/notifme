@@ -1,7 +1,7 @@
 {
   "name": "vue_chrome_extension_boilerplate",
   "version": "1.0.0",
-  "description": "",
+  "description": "<p align=\"center\"><a href=\"https://vuejs.org\" target=\"_blank\" rel=\"noopener noreferrer\"><img width=\"100\" src=\"https://vuejs.org/images/logo.png\" alt=\"Vue logo\"></a></p>",
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development && webpack --mode='development' --watch --config ./webpack.config.js",
@@ -20,9 +20,13 @@
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
     "vue": "^2.6.14",
-    "vue-loader": "^15.9.8",
+    "vue-loader": "^15.11.1",
     "vue-template-compiler": "^2.6.14",
     "webpack": "^5.61.0",
     "webpack-cli": "^4.9.1"
-  }
+  },
+  "dependencies": {
+    "@webcomponents/custom-elements": "^1.6.0"
+  },
+  "keywords": []
 }

@@ -1,11 +1,11 @@
 <template>
   <div class="app">
-    <h1 class="app__title">Google Extension</h1>
+    <h1 class="app__title">Notifme</h1>
 
     <template v-if="domIsReady">
       <SearchTerm class="app__search-term" :tabId="tabId"/>
       <SetGoogleBackground :tabId="tabId"/>
-      <button :></button>
+      <button></button>
     </template>
 
     <h2 v-else class="app__title"> Loading...</h2>
@@ -20,7 +20,7 @@ import SetGoogleBackground from './components/SetGoogleBackground.vue'
 export default {
   components: {
     SearchTerm,
-    SetGoogleBackground,
+    SetGoogleBackground
   },
   data() {
     return {
@@ -30,6 +30,7 @@ export default {
   },
   mounted() {
     this.awaitReady()
+
   },
   methods: {
     async awaitReady() {

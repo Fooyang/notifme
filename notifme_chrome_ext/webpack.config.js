@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const GenerateJsonPlugin = require('generate-json-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+
 const isProd = process.env.NODE_ENV === 'production'
 
 const output = {

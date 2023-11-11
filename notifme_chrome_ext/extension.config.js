@@ -1,31 +1,36 @@
 module.exports = {
   //config to generate your manifest json
   manifest: {
-    name: 'Extension Name',
-    description: 'Extension description here',
-    version: '1.0',
+    name: "Notifme",
+    description: "Extension description here",
+    version: "1.0",
     manifest_version: 3,
     background: {
-      service_worker: 'background.js'
+      service_worker: "background.js",
     },
     content_scripts: [
       {
         matches: [
-          'https://*.google.com/*',
-          'https://*.google.com.br/*'
+          // "https://*.google.com/*",
+          // "https://*.google.com.br/*",
+          "<all_urls>",
         ],
-        js: ['content.js']
-      }
+        js: [
+          "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
+          "medium-highlighter.js",
+          "content.js",
+        ],
+      },
     ],
-    permissions: ['storage', 'activeTab', 'declarativeContent'],
+    permissions: ["storage", "activeTab", "declarativeContent"],
     action: {
-      default_popup: 'index.html'
+      default_popup: "index.html",
     },
   },
   //setting your main,background,content or whatever files
   entry: {
-    main: './src/main.js',
-    background: './src/background.js',
-    content: './src/handle-dom.js'
-  }
-}
+    main: "./src/main.js",
+    background: "./src/background.js",
+    content: "./src/content.js",
+  },
+};
