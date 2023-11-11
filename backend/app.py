@@ -7,6 +7,8 @@ def post_example():
     # Get JSON data from the request
     data = request.get_json()
 
+    headers = {'Content-Type': 'application/json'}
+
     # Assuming the JSON data has a 'message' field
     message = data.get('message', 'No message provided')
 
