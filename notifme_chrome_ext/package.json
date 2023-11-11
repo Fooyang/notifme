@@ -1,0 +1,27 @@
+{
+  "name": "vue_chrome_extension_boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "export NODE_ENV=development && webpack --mode='development' --watch --config ./webpack.config.js",
+    "build": "export NODE_ENV=production && webpack --mode='production' --config ./webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^6.5.1",
+    "html-webpack-plugin": "^5.5.0",
+    "json-loader": "^0.5.7",
+    "mini-css-extract-plugin": "^2.4.4",
+    "style-loader": "^3.3.1",
+    "generate-json-webpack-plugin": "^2.0.0",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
+    "vue": "^2.6.14",
+    "vue-loader": "^15.9.8",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.61.0",
+    "webpack-cli": "^4.9.1"
+  }
+}
