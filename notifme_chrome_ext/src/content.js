@@ -159,28 +159,52 @@
 //   });
 // });
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.action === "inject_content_script") {
-    // Your logic to inject into the page goes here
-    console.log("Injecting content script into the page");
+// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+//   if (request.action === "inject_content_script") {
+//     // Your logic to inject into the page goes here
+//     console.log("Injecting content script into the page");
 
-    // Example: Append a script tag with the content of content.js
-    const script = document.createElement("script");
-    script.textContent = `(${injectLogic.toString()})();`;
-    document.head.appendChild(script);
-  }
-});
+//     // Example: Append a script tag with the content of content.js
+//     const script = document.createElement("script");
+//     script.textContent = `(${injectLogic.toString()})();`;
+//     document.head.appendChild(script);
+//   }
+// });
 
-function injectLogic() {
-    // Your logic here
-    document.addEventListener("mouseover", function (event) {
+// function injectLogic() {
+//     // Your logic here
+//     document.addEventListener("mouseover", function (event) {
+//       // Check if the target is an HTML element
+//       if (event.target instanceof HTMLElement) {
+//         // Save the current border style for later restoration
+//         event.target._originalBorderStyle = event.target.style.border;
+
+//         // Apply the new styles on hover
+//         event.target.style.border = "2px solid red"; // Change the color and width as needed
+//       }
+//     });
+//     document.addEventListener("mouseout", function (event) {
+//       // Check if the target is an HTML element
+//       if (event.target instanceof HTMLElement) {
+//         // Save the current border style for later restoration
+//         event.target._originalBorderStyle = event.target.style.border;
+
+//         // Apply the new styles on hover
+//         event.target.style.border = ""; // Change the color back to empty
+//       }
+//     });
+//   console.log("Injected content script logic");
+// }
+
+document.addEventListener("mouseover", function (event) {
       // Check if the target is an HTML element
       if (event.target instanceof HTMLElement) {
         // Save the current border style for later restoration
         event.target._originalBorderStyle = event.target.style.border;
 
         // Apply the new styles on hover
-        event.target.style.border = "2px solid red"; // Change the color and width as needed
+          event.target.style.border = "2px solid red"; // Change the color and width as needed
+          event.target.style.backgroundColor = "yellow";
       }
     });
     document.addEventListener("mouseout", function (event) {
@@ -190,11 +214,11 @@ function injectLogic() {
         event.target._originalBorderStyle = event.target.style.border;
 
         // Apply the new styles on hover
-        event.target.style.border = ""; // Change the color back to empty
+          event.target.style.border = ""; // Change the color back to empty
+          event.target.style.backgroundColor = "";
       }
     });
-  console.log("Injected content script logic");
-}
+
 
 
 
