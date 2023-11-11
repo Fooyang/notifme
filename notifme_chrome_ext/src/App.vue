@@ -5,7 +5,12 @@
     <template v-if="domIsReady">
       <SearchTerm class="app__search-term" :tabId="tabId"/>
       <SetGoogleBackground :tabId="tabId"/>
-      <button></button>
+      <v-container>
+        <v-row v-for="item in links" :key="item">
+          <h1><a :href="item" @click.prevent="openLink(item)">{{ item }}</a></h1>
+        </v-row>
+      </v-container>
+      <button @click="addLink">add</button>
     </template>
 
     <h2 v-else class="app__title"> Loading...</h2>
@@ -25,7 +30,9 @@ export default {
   data() {
     return {
       domIsReady: false,
-      tabId: ''
+      tabId: '',
+      links: [],
+      editMode: false
     }
   },
   mounted() {
@@ -38,6 +45,16 @@ export default {
       this.domIsReady = true
       this.tabId = await getTabId()
     },
+    addLink() {
+      this.links.push("https://www.google.com/");
+    },
+    // fix this
+    openLink(link) {
+      chrome.runtime.sendMessage({ action: "openNewTab", link });
+    },
+    setEdit() {
+      editMode = !editMode;
+    }
   },
 }
 </script>

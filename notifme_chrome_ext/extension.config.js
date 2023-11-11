@@ -11,9 +11,7 @@ module.exports = {
     content_scripts: [
       {
         matches: [
-          // "https://*.google.com/*",
-          // "https://*.google.com.br/*",
-          "<all_urls>",
+          "<all_urls>"
         ],
         js: [
           "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
@@ -22,7 +20,7 @@ module.exports = {
         ],
       },
     ],
-    permissions: ["storage", "activeTab", "declarativeContent"],
+    permissions: ['storage', 'activeTab', 'declarativeContent','tabs'],
     action: {
       default_popup: "index.html",
     },
