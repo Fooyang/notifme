@@ -1,7 +1,5 @@
-import sendgrid
 import os
 from dotenv import load_dotenv
-from sendgrid.helpers.mail import Mail, Email, To, Content
 import yagmail
 
 # Load environment variables from the .env file
