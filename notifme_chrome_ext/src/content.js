@@ -53,14 +53,14 @@ function logButtonClick(event) {
 
       // Send both pieces of data to the background script
       chrome.runtime.sendMessage({
-        action: "sendData",
+          action: "sendData",
         xPathList: xPathList,
-        finalXpath: lastButtonXpath,
+        lastButtonXpath: lastButtonXpath,
       });
     } else {
       event.target.style.border = "7px solid green";
       lastButtonXpath = xpath;
-      xPathList.push(getXPath(xpath));
+      xPathList.push(xpath);
     }
     
   }

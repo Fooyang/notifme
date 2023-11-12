@@ -26,7 +26,7 @@
       </div>
       <div v-else>
         <h1>Enter Reference Name</h1>
-      
+
         <!-- Text box for entering the name of the link -->
         <input v-model="linkName" placeholder="Enter link name" />
 
@@ -42,15 +42,14 @@ import { domIsReady, getTabId } from "./utils/chrome";
 import SearchTerm from "./components/Add.vue";
 import SetGoogleBackground from "./components/SetGoogleBackground.vue";
 import Popup from "./components/Popup.vue";
-import axios from 'axios';
-
+import axios from "axios";
 
 export default {
   components: {
     SearchTerm,
     SetGoogleBackground,
     Popup,
-},
+  },
   data() {
     return {
       domIsReady: false,
@@ -61,31 +60,37 @@ export default {
       linkName: "",
       email: undefined,
       apiData: [],
-      xPathList: [],
-      finalXpath: "",
-
+      receivedData: {
+        url: "",
+        xPathList: [],
+        lastButtonXpath: "",
+      },
     };
   },
   mounted() {
     this.awaitReady();
+    console.log("get here");
 
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.action === 'receiveData') {
+      console.log("get here 2");
+      console.log(request.action);
+      if (request.action === "sendData") {
         // Update the component's data with the received data
+        console.log("get here 3");
+        this.receivedData.url = request.url;
         this.receivedData.xPathList = request.xPathList;
-        this.receivedData.finalXpath = request.lastButtonXpath;
-        setDone();
+        this.receivedData.lastButtonXpath = request.lastButtonXpath;
       }
     });
   },
   created() {
-    const isEnabled = sessionStorage.getItem('isEnabled');
+    const isEnabled = sessionStorage.getItem("isEnabled");
     if (isEnabled) {
-      this.editMode = isEnabled === 'true';
+      this.editMode = isEnabled === "true";
     } else {
       this.editMode = false;
     }
-    const email = localStorage.getItem('email');
+    const email = localStorage.getItem("email");
     if (email) {
       this.email = email;
     }
@@ -112,14 +117,16 @@ export default {
     openLink(link) {
       chrome.runtime.sendMessage({ action: "openNewTab", link });
     },
-    setDone() { 
+    setDone() {
       console.log("Nothing");
       this.done = !this.done;
-      console.log("this final xpath" + this.finalXpath);
+      console.log(this.done);
+      console.log("this final xpath" + this.receivedData.lastButtonXpath);
+      console.log("this final xpath list" + this.receivedData.xPathList);
     },
     setEdit() {
       this.editMode = !this.editMode;
-      sessionStorage.setItem('isEnabled', this.editMode); 
+      sessionStorage.setItem("isEnabled", this.editMode);
       chrome.runtime.sendMessage({
         action: "updateEditMode",
         editMode: this.editMode,
@@ -127,23 +134,34 @@ export default {
     },
     saveEmail() {
       this.email = document.getElementById("email").value;
-      localStorage.setItem('email', this.email);
-    }
-    // async sendPostRequest() { 
-    //   try {
-    //     const response = await axios.post('http://your-flask-api-endpoint', {
-          
-    //     });
+      localStorage.setItem("email", this.email);
+    },
+    async sendPostRequest() {
+      try {
+        // Specify the data you want to send in the request body
+        const requestData = {
+          email: this.email,
+          url: this.receivedData.url,
+          clicks: this.receivedData.xPathList,
+          final_xpath: this.receivedData.lastButtonXpath,
+          name: this.linkName,
+        };
 
-    //     // Handle the response
-    //     console.log('Response:', response.data);
-    //   } catch (error) {
-    //     // Handle errors
-    //     console.error('Error:', error);
-    //   }
-    // },
+        // Make a POST request with the specified data
+        const response = await axios.post(
+          "http://your-flask-api-endpoint",
+          requestData
+        );
 
-    // async fetchData() { 
+        // Handle the response
+        console.log("Response:", response.data);
+      } catch (error) {
+        // Handle errors
+        console.error("Error:", error);
+      }
+    },
+
+    // async fetchData() {
     //   try {
     //     // Make a GET request to your Flask API endpoint
     //     const response = await axios.get('http://your-flask-api-endpoint');

@@ -17,11 +17,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "sendData") {
     // Forward the data to the Vue frontend using chrome.tabs.sendMessage
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const activeTab = tabs[0];
+        const activeTab = tabs[0];
+
       chrome.tabs.sendMessage(activeTab.id, {
-        action: "receiveData",
+          action: "receiveData",
+          url: activeTab.URL,
         xPathList: request.xPathList,
-        finalXpath: request.lastButtonXpath,
+        lastButtonXpath: request.lastButtonXpath,
       });
     });
   }
