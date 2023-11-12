@@ -1,7 +1,7 @@
-
 from firebase_admin import initialize_app, firestore
 from flask import Flask, request, jsonify
 from scraper import navigate_to_element, find_element_by_xpath
+from gmail import send_email
 import os
 import pathlib
 
@@ -21,11 +21,12 @@ def create_notif():
     email_collection_ref = db.collection(top_level_collection).document("Users").collection(data["email"])
     doc_ref = email_collection_ref.document()
     
-    initial_text = navigate_to_element(data["url"], data["clicks"], data["final xpath"])
+    initial_text = navigate_to_element(data["url"], data["clicks"], data["final_xpath"])
     data_to_merge = {
+        "name": data["name"],
         "url": data["url"],
         "clicks": data["clicks"],
-        "final xpath": data["final xpath"],
+        "final_xpath": data["final_xpath"],
         "text": initial_text
     }
     doc_ref.set(data_to_merge)
@@ -34,18 +35,17 @@ def create_notif():
 @app.route('/api/check-notifs', methods=['GET'])
 def check_notifs():
     collections  = db.collection("Users").document("Users").collections()
-    # Users -> Documents (Emails) -> Collection (Email) -> Multiple Documents, need to access click for each
 
     for collection in collections:
         email_documents = collection.stream()
         for email_document in email_documents:
             email_document_data = email_document.to_dict();
             initial_text = email_document_data["text"]
-            new_text = navigate_to_element(email_document_data["url"], email_document_data["clicks"], email_document_data["final xpath"])
+            new_text = navigate_to_element(email_document_data["url"], email_document_data["clicks"], email_document_data["final_xpath"])
             if new_text != initial_text:
-                print("there's been a change")
-            else:
-                print("no change, all good")
+                send_email(email_document_data["name"], email_document_data["url"], collection.id, initial_text, new_text)
+                document_ref = collection.document(email_document.id)
+                document_ref.update({"text": new_text})
     return {}
     
     
