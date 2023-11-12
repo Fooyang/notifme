@@ -6,7 +6,7 @@ import os
 import pathlib
 from flask_cors import CORS
 
-os.system('playwright install')
+os.system('playwright install --with-deps chromium')
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] =  str(pathlib.Path().resolve()) + "/cred.json"
 app = initialize_app()
 db = firestore.client(app)
@@ -52,6 +52,36 @@ def check_notifs():
                 document_ref = collection.document(email_document.id)
                 document_ref.update({"text": new_text})
     return {}
+
+@app.route('/api/delete-notif', methods=['DELETE'])
+def delete_notif():
+    data = request.get_json()
+    name = data["name"]
+    email = data["email"]
+    collection = db.collection("Users").document("Users").collection(email)
+    email_documents = collection.stream()
+    for email_document in email_documents:
+        email_document_data = email_document.to_dict();
+        if (email_document_data["name"] == name):
+            email_document.reference.delete()
+    return {"deleted": name}
+
+@app.route('/api/get-notifs', methods=['GET'])
+def get_notifs():
+    data = request.get_json()
+    email = data["email"]
+    collection = db.collection("Users").document("Users").collection(email)
+    email_data = []
+    for email_document in collection.stream():
+        email_document_data = email_document.to_dict()
+        email_data.append(email_document_data)
+    return email_data
+
+    
+    
+    
+
+
     
     
 if __name__ == '__main__':

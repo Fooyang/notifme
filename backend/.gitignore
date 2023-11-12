@@ -2,3 +2,5 @@ notifme
 cred.json
 __pycache__
 .env
+.dockerignore
+Dockerfile
