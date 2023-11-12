@@ -58,6 +58,15 @@ export default {
   mounted() {
     this.awaitReady();
   },
+  created() {
+    const storedData = localStorage.getItem('isEnabled');
+    console.log(storedData);
+    if (storedData) {
+      this.editMode = storedData === 'true';
+    } else {
+      this.editMode = false;
+    }
+  },
   methods: {
     async awaitReady() {
       await domIsReady();
@@ -90,10 +99,12 @@ export default {
     },
     setEdit() {
       this.editMode = !this.editMode;
+      localStorage.setItem('isEnabled', this.editMode); 
       chrome.runtime.sendMessage({
         action: "updateEditMode",
         editMode: this.editMode,
       });
+      console.log(localStorage.getItem('isEnabled'));
     },
   },
 };
