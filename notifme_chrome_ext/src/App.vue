@@ -3,26 +3,24 @@
     <h1 class="app__title">Notifme</h1>
 
     <template v-if="domIsReady">
-      <SearchTerm class="app__search-term" :tabId="tabId" />
-      <SetGoogleBackground :tabId="tabId" />
       <v-container>
-        <h2 class="list__list">My WatchList</h2>
+        <h2 class="app__list">My WatchList</h2>
         <v-row v-for="item in links" :key="item">
           <h1>
             <a :href="item" @click.prevent="openLink(item)">{{ item }}</a>
           </h1>
         </v-row>
       </v-container>
-      <button @click="addLink">add</button>
-      <button v-if="!editMode" @click="setEdit">start</button>
-      <button v-else @click="setEdit">stop</button>
-      <button v-if="!done" @click="setDone">Done</button>
+      <button class="button" @click="addLink">add</button>
+      <button class="button" v-if="!editMode" @click="setEdit">start</button>
+      <button class="button" v-else @click="setEdit">stop</button>
+      <button class="button" v-if="!done" @click="setDone">Done</button>
     </template>
     <h2 v-else class="app__title">Loading...</h2>
     <div v-if="done">
       <div v-if="email == undefined">
         <input id="email" placeholder="Please enter your email" />
-        <button @click="saveEmail">Save</button>
+        <button class="button" @click="saveEmail">Save</button>
       </div>
       <div v-else>
         <h1>Enter Reference Name</h1>
@@ -31,7 +29,7 @@
         <input v-model="linkName" placeholder="Enter link name" />
 
         <!-- Save button -->
-        <button @click="saveLink">Save</button>
+        <button class="button" @click="saveLink">Save</button>
       </div>
     </div>
   </div>
@@ -184,32 +182,56 @@ export default {
   font-weight: bold;
   font-size: 12px;
   text-align: center;
-  background-color: green;
-  margin: 0 auto; /* Center the button horizontally */
-  display: block; /* Ensure the button takes full width */
-  width: fit-content; /* Adjust the button width based on its content */
-  margin-bottom: 8px;
+  margin-bottom: 15px;
+  background-color: #1a936f; /* Green color */
+  color: #fff; /* White text */
+  padding: 5px 10px; /* Adjust padding for better proportions */
+  border-radius: 10px; /* Rounded edges */
+  border: none; /* Remove border */
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+
+  /* Ensure the button takes full width */
+  display: block;
+
+  /* Adjust the button width based on its content */
+  width: fit-content;
+
+  /* Add a subtle glow effect on hover */
+  &:hover {
+    background-color: #0d7052; /* Darker green on hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+  }
 }
 
 .app {
   height: 500px;
-  width: 300px; /* Set the container height to 100% of the viewport height */
+  width: 300px;
+  margin: 0 auto; /* Center horizontally */
   display: flex;
   flex-direction: column;
+  background-color: #c0fdfb;
   align-items: center;
-  justify-content: center;
+  align-self: flex-start; /* Keep it at the top */
   padding: 10px;
 
-  &__search-term {
-    margin-bottom: 10px;
+  &__title{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+    letter-spacing: 1px;
+  }
+  &__list {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+    letter-spacing: 1px;
   }
 
-  &__title,
-  &__list {
-    font-weight: bold;
-    font-size: 16px; /* Adjust the title font size for consistency */
-    margin-bottom: 10px;
-    text-align: center;
-  }
 }
 </style>
