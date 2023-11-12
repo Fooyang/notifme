@@ -68,7 +68,6 @@ export default {
   mounted() {
     this.awaitReady();
     console.log("get here");
-
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log("get here 2");
       console.log(request.action);
