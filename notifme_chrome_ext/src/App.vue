@@ -39,7 +39,6 @@ import Popup from "./components/Popup.vue";
 import axios from 'axios';
 
 
-
 export default {
   components: {
     SearchTerm,
@@ -55,10 +54,22 @@ export default {
       done: false,
       linkName: "",
       apiData: [],
+      xPathList: [],
+      finalXpath: "",
+
     };
   },
   mounted() {
     this.awaitReady();
+
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.action === 'receiveData') {
+        // Update the component's data with the received data
+        this.receivedData.xPathList = request.xPathList;
+        this.receivedData.finalXpath = request.lastButtonXpath;
+        setDone();
+      }
+    });
   },
   created() {
     const storedData = localStorage.getItem('isEnabled');
@@ -74,7 +85,7 @@ export default {
       await domIsReady();
       this.domIsReady = true;
       this.tabId = await getTabId();
-      this.fetchData();
+      // this.fetchData();
     },
     saveLink() {
       // Implement your logic to save the link with the entered name
@@ -91,14 +102,10 @@ export default {
     openLink(link) {
       chrome.runtime.sendMessage({ action: "openNewTab", link });
     },
-    getDone() { 
-      chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-
-      });
-    },
     setDone() { 
       console.log("Nothing");
       this.done = !this.done;
+      console.log("this final xpath" + this.finalXpath);
     },
     setEdit() {
       this.editMode = !this.editMode;
@@ -109,32 +116,32 @@ export default {
       });
       console.log(localStorage.getItem('isEnabled'));
     },
-    async sendPostRequest() { 
-      try {
-        const response = await axios.post('http://your-flask-api-endpoint', {
+    // async sendPostRequest() { 
+    //   try {
+    //     const response = await axios.post('http://your-flask-api-endpoint', {
           
-        });
+    //     });
 
-        // Handle the response
-        console.log('Response:', response.data);
-      } catch (error) {
-        // Handle errors
-        console.error('Error:', error);
-      }
-    },
+    //     // Handle the response
+    //     console.log('Response:', response.data);
+    //   } catch (error) {
+    //     // Handle errors
+    //     console.error('Error:', error);
+    //   }
+    // },
 
-    async fetchData() { 
-      try {
-        // Make a GET request to your Flask API endpoint
-        const response = await axios.get('http://your-flask-api-endpoint');
+    // async fetchData() { 
+    //   try {
+    //     // Make a GET request to your Flask API endpoint
+    //     const response = await axios.get('http://your-flask-api-endpoint');
 
-        // Update the component's data with the fetched data
-        this.apiData = response.data;
-      } catch (error) {
-        // Handle errors
-        console.error('Error:', error);
-      }
-    }
+    //     // Update the component's data with the fetched data
+    //     this.apiData = response.data;
+    //   } catch (error) {
+    //     // Handle errors
+    //     console.error('Error:', error);
+    //   }
+    // }
   },
 };
 </script>
