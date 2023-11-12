@@ -1,8 +1,8 @@
 var enabled;
-if(!localStorage.getItem('isEnabled')) {
+if(!sessionStorage.getItem('isEnabled')) {
   enabled = false;
 } else {
-  enabled = localStorage.getItem('isEnabled') === 'true';
+  enabled = sessionStorage.getItem('isEnabled') === 'true';
 }
 
 var isButtonClicked = false;
@@ -108,7 +108,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       document.removeEventListener("mouseout", handleMouseout);
       document.removeEventListener("click", logButtonClick);
     }
-    localStorage.setItem("isEnabled", enabled + "");
+    sessionStorage.setItem('isEnabled', enabled + '');
   }
 });
 

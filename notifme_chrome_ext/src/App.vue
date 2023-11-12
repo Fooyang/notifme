@@ -20,13 +20,19 @@
     </template>
     <h2 v-else class="app__title">Loading...</h2>
     <div v-if="done">
-      <h1>Enter Reference Name</h1>
+      <div v-if="email == undefined">
+        <input id="email" placeholder="Please enter your email" />
+        <button @click="saveEmail">Save</button>
+      </div>
+      <div v-else>
+        <h1>Enter Reference Name</h1>
       
-      <!-- Text box for entering the name of the link -->
-      <input v-model="linkName" placeholder="Enter link name" />
+        <!-- Text box for entering the name of the link -->
+        <input v-model="linkName" placeholder="Enter link name" />
 
-      <!-- Save button -->
-      <button @click="saveLink">Save</button>
+        <!-- Save button -->
+        <button @click="saveLink">Save</button>
+      </div>
     </div>
   </div>
 </template>
@@ -53,6 +59,7 @@ export default {
       editMode: false,
       done: false,
       linkName: "",
+      email: undefined
       apiData: [],
       xPathList: [],
       finalXpath: "",
@@ -72,12 +79,15 @@ export default {
     });
   },
   created() {
-    const storedData = localStorage.getItem('isEnabled');
-    console.log(storedData);
-    if (storedData) {
-      this.editMode = storedData === 'true';
+    const isEnabled = sessionStorage.getItem('isEnabled');
+    if (isEnabled) {
+      this.editMode = isEnabled === 'true';
     } else {
       this.editMode = false;
+    }
+    const email = localStorage.getItem('email');
+    if (email) {
+      this.email = email;
     }
   },
   methods: {
@@ -109,13 +119,16 @@ export default {
     },
     setEdit() {
       this.editMode = !this.editMode;
-      localStorage.setItem('isEnabled', this.editMode); 
+      sessionStorage.setItem('isEnabled', this.editMode); 
       chrome.runtime.sendMessage({
         action: "updateEditMode",
         editMode: this.editMode,
       });
-      console.log(localStorage.getItem('isEnabled'));
     },
+    saveEmail() {
+      this.email = document.getElementById("email").value;
+      localStorage.setItem('email', this.email);
+    }
     // async sendPostRequest() { 
     //   try {
     //     const response = await axios.post('http://your-flask-api-endpoint', {
