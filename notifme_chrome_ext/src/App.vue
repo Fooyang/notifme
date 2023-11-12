@@ -36,6 +36,7 @@ import { domIsReady, getTabId } from "./utils/chrome";
 import SearchTerm from "./components/Add.vue";
 import SetGoogleBackground from "./components/SetGoogleBackground.vue";
 import Popup from "./components/Popup.vue";
+import axios from 'axios';
 
 
 
@@ -53,6 +54,7 @@ export default {
       editMode: false,
       done: false,
       linkName: "",
+      apiData: [],
     };
   },
   mounted() {
@@ -72,6 +74,7 @@ export default {
       await domIsReady();
       this.domIsReady = true;
       this.tabId = await getTabId();
+      this.fetchData();
     },
     saveLink() {
       // Implement your logic to save the link with the entered name
@@ -106,6 +109,32 @@ export default {
       });
       console.log(localStorage.getItem('isEnabled'));
     },
+    async sendPostRequest() { 
+      try {
+        const response = await axios.post('http://your-flask-api-endpoint', {
+          
+        });
+
+        // Handle the response
+        console.log('Response:', response.data);
+      } catch (error) {
+        // Handle errors
+        console.error('Error:', error);
+      }
+    },
+
+    async fetchData() { 
+      try {
+        // Make a GET request to your Flask API endpoint
+        const response = await axios.get('http://your-flask-api-endpoint');
+
+        // Update the component's data with the fetched data
+        this.apiData = response.data;
+      } catch (error) {
+        // Handle errors
+        console.error('Error:', error);
+      }
+    }
   },
 };
 </script>
