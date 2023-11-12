@@ -90,3 +90,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     localStorage.setItem('isEnabled', enabled + '');
   }
 });
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if(request.action === "openNewTab") {
+    window.open(request.link, "_blank");
+    return true;
+  }
+})
