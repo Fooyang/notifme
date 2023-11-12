@@ -69,10 +69,8 @@ function getXPath(element) {
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("weird!");
   if (request.action === "updateEditMode") {
     isButtonClicked = request.editMode;
-    console.log("hello!");
     if (isButtonClicked) {
       document.addEventListener("mouseover", handleMouseover);
       document.addEventListener("mouseout", handleMouseout);
@@ -83,6 +81,5 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       document.removeEventListener("click", logButtonClick);
     }
   }
-  console.log(message);
   return true;
 });
