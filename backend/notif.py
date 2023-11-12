@@ -6,7 +6,7 @@ import os
 import pathlib
 from flask_cors import CORS
 
-os.system('playright install')
+os.system('playwright install')
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] =  str(pathlib.Path().resolve()) + "/cred.json"
 app = initialize_app()
 db = firestore.client(app)
