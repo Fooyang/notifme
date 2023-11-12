@@ -59,7 +59,7 @@ export default {
       editMode: false,
       done: false,
       linkName: "",
-      email: undefined
+      email: undefined,
       apiData: [],
       xPathList: [],
       finalXpath: "",
