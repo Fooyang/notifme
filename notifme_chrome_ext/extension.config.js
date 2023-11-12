@@ -10,17 +10,16 @@ module.exports = {
     },
     content_scripts: [
       {
-        matches: [
-          "<all_urls>"
-        ],
+        matches: ["<all_urls>"],
         js: [
           // "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
           // "medium-highlighter.js",
-          "content.js",
+          "./content.js",
         ],
+        all_frames: true,
       },
     ],
-    permissions: ['storage', 'activeTab', 'declarativeContent','tabs'],
+    permissions: ["storage", "activeTab", "declarativeContent", "tabs"],
     action: {
       default_popup: "index.html",
     },
@@ -31,6 +30,5 @@ module.exports = {
     background: "./src/background.js",
     // mediumHighlighter: "./src/medium-highlighter.js",
     content: "./src/content.js",
-
   },
 };

@@ -1,224 +1,75 @@
-// const mediumHighlighter = document.createElement("medium-highlighter");
-// document.body.appendChild(mediumHighlighter);
+var isButtonClicked = true
 
-// const setMarkerPosition = (markerPosition) =>
-//   mediumHighlighter.setAttribute(
-//     "markerPosition",
-//     JSON.stringify(markerPosition)
-//   );
+// Function to handle mouseover event
+function handleMouseover(event) {
+  // Check if the button has been clicked
+  if (isButtonClicked) {
+    // Check if the target is an HTML element
+    if (event.target instanceof HTMLElement) {
+      // Save the current border style for later restoration
+      event.target._originalBorderStyle = event.target.style.border;
 
-// setMarkerPosition({
-//   left: 0,
-//   top: 0,
-//   display: "flex",
-// });
+      event.target.style.border = "7px solid orange"; // Change the color and width as needed
+    }
+  }
+}
 
-// const getSelectedText = () => window.getSelection().toString();
+// Function to handle mouseout event
+function handleMouseout(event) {
+  // Check if the button has been clicked
+  if (isButtonClicked) {
+    // Check if the target is an HTML element
+    if (event.target instanceof HTMLElement) {
+      // Save the current border style for later restoration
+      event.target._originalBorderStyle = event.target.style.border;
 
-// document.addEventListener("click", () => {
-//     console.log("clicked")
-//   if (getSelectedText().length > 0) {
-//     setMarkerPosition(getMarkerPosition());
-//   }
-// });
+      event.target.style.border = ""; // Change the color back to empty
+    }
+  }
+}
 
-// document.addEventListener("selectionchange", () => {
-//   if (getSelectedText().length === 0) {
-//     setMarkerPosition({ display: "none" });
-//   }
-// });
+// Function to log button clicks with XPath
+function logButtonClick(event) {
+  // Check if the target is an HTML element
+  if (event.target instanceof HTMLElement) {
+    // Log the button click along with its XPath
+    console.log("Button clicked at XPath: " + getXPath(event.target));
+  }
+}
+document.addEventListener("click", function (event) {
+  // Log the click event along with its XPath
+  logButtonClick(event);
+});
+// Event listeners for mouseover and mouseout
+document.addEventListener("mouseover", handleMouseover);
+document.addEventListener("mouseout", handleMouseout);
 
-// function getMarkerPosition() {
-//   const rangeBounds = window
-//     .getSelection()
-//     .getRangeAt(0)
-//     .getBoundingClientRect();
-//   return {
-//     // Substract width of marker button -> 40px / 2 = 20
-//     left: rangeBounds.left + rangeBounds.width / 2 - 20,
-//     top: rangeBounds.top - 30,
-//     display: "flex",
-//   };
-// }
-
-// const highlightColor = "rgb(213, 234, 255)";
-
-// const template = `
-//   <template id="highlightTemplate">
-//     <span class="highlight" style="background-color: ${highlightColor}; display: inline"></span>
-//   </template>
-//   <button id="mediumHighlighter">
-//     <svg class="text-marker" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 544 512"><path d="M0 479.98L99.92 512l35.45-35.45-67.04-67.04L0 479.98zm124.61-240.01a36.592 36.592 0 0 0-10.79 38.1l13.05 42.83-50.93 50.94 96.23 96.23 50.86-50.86 42.74 13.08c13.73 4.2 28.65-.01 38.15-10.78l35.55-41.64-173.34-173.34-41.52 35.44zm403.31-160.7l-63.2-63.2c-20.49-20.49-53.38-21.52-75.12-2.35L190.55 183.68l169.77 169.78L530.27 154.4c19.18-21.74 18.15-54.63-2.35-75.13z"></path></svg>
-//   </button>
-// `;
-
-// const styled = ({ display = "none", left = 0, top = 0 }) => `
-//   #mediumHighlighter {
-//     align-items: center;
-//     background-color: black;
-//     border-radius: 5px;
-//     border: none;
-//     cursor: pointer;
-//     display: ${display};
-//     justify-content: center;
-//     left: ${left}px;
-//     padding: 5px 10px;
-//     position: fixed;
-//     top: ${top}px;
-//     width: 40px;
-//     z-index: 9999;
-//   }
-//   .text-marker {
-//     fill: white;
-//   }
-//   .text-marker:hover {
-//     fill: ${highlightColor};
-//   }
-// `;
-
-// class MediumHighlighter extends HTMLElement {
-//   get markerPosition() {
-//     return JSON.parse(this.getAttribute("markerPosition") || "{}");
-//   }
-
-//   get styleElement() {
-//     return this.shadowRoot.querySelector("style");
-//   }
-
-//   get highlightTemplate() {
-//     return this.shadowRoot.getElementById("highlightTemplate");
-//   }
-
-//   static get observedAttributes() {
-//     return ["markerPosition"];
-//   }
-
-//   constructor() {
-//     super();
-//     this.render();
-//   }
-
-//   render() {
-//     this.attachShadow({ mode: "open" });
-//     const style = document.createElement("style");
-//     style.textContent = styled({});
-//     this.shadowRoot.appendChild(style);
-//     this.shadowRoot.innerHTML += template;
-//     this.shadowRoot
-//       .getElementById("mediumHighlighter")
-//       .addEventListener("click", () => this.highlightSelection());
-//   }
-
-//   attributeChangedCallback(name, oldValue, newValue) {
-//     if (name === "markerPosition") {
-//       this.styleElement.textContent = styled(this.markerPosition);
-//     }
-//   }
-
-//   highlightSelection() {
-//     var userSelection = window.getSelection();
-//     for (let i = 0; i < userSelection.rangeCount; i++) {
-//       this.highlightRange(userSelection.getRangeAt(i));
-//     }
-//     window.getSelection().empty();
-//   }
-
-//   highlightRange(range) {
-//     const clone =
-//       this.highlightTemplate.cloneNode(true).content.firstElementChild;
-//     clone.appendChild(range.extractContents());
-//     range.insertNode(clone);
-//   }
-// }
-
-// content.js
-// document.addEventListener('DOMContentLoaded', function () {
-//   const hoveredTextElement = document.body;
-
-//   hoveredTextElement.addEventListener('mouseover', function (event) {
-//     const targetElement = event.target;
-
-//     // Check if the mouse is over a text node
-//     if (targetElement.nodeType === Node.TEXT_NODE) {
-//         const hoveredText = targetElement.nodeValue.trim();
-//         console.log(`Hovered over text: "${hoveredText}"`);
-
-//       // Optionally, highlight the text
-//       targetElement.parentElement.classList.add('highlighted-text');
-//     }
-//   });
-
-//   hoveredTextElement.addEventListener('mouseout', function (event) {
-//     const targetElement = event.target;
-
-//     // Check if the mouse is over a text node
-//     if (targetElement.nodeType === Node.TEXT_NODE) {
-//       // When the mouse pointer leaves the text element, remove the highlight
-//       targetElement.parentElement.classList.remove('highlighted-text');
-//     }
-//   });
-// });
-
-// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-//   if (request.action === "inject_content_script") {
-//     // Your logic to inject into the page goes here
-//     console.log("Injecting content script into the page");
-
-//     // Example: Append a script tag with the content of content.js
-//     const script = document.createElement("script");
-//     script.textContent = `(${injectLogic.toString()})();`;
-//     document.head.appendChild(script);
-//   }
-// });
-
-// function injectLogic() {
-//     // Your logic here
-//     document.addEventListener("mouseover", function (event) {
-//       // Check if the target is an HTML element
-//       if (event.target instanceof HTMLElement) {
-//         // Save the current border style for later restoration
-//         event.target._originalBorderStyle = event.target.style.border;
-
-//         // Apply the new styles on hover
-//         event.target.style.border = "2px solid red"; // Change the color and width as needed
-//       }
-//     });
-//     document.addEventListener("mouseout", function (event) {
-//       // Check if the target is an HTML element
-//       if (event.target instanceof HTMLElement) {
-//         // Save the current border style for later restoration
-//         event.target._originalBorderStyle = event.target.style.border;
-
-//         // Apply the new styles on hover
-//         event.target.style.border = ""; // Change the color back to empty
-//       }
-//     });
-//   console.log("Injected content script logic");
-// }
-
-document.addEventListener("mouseover", function (event) {
-      // Check if the target is an HTML element
-      if (event.target instanceof HTMLElement) {
-        // Save the current border style for later restoration
-        event.target._originalBorderStyle = event.target.style.border;
-
-        // Apply the new styles on hover
-          event.target.style.border = "2px solid red"; // Change the color and width as needed
-          event.target.style.backgroundColor = "yellow";
+// Function to get XPath of an element
+function getXPath(element) {
+  if (element && element.id) {
+    // If the element has an ID, use it for the XPath
+    return 'id("' + element.id + '")';
+  } else {
+    // Otherwise, traverse the DOM to generate the XPath
+    let path = "";
+    while (element.parentNode) {
+      let index = 0;
+      // Find the index of the element among its siblings
+      for (
+        let sibling = element.previousSibling;
+        sibling;
+        sibling = sibling.previousSibling
+      ) {
+        if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {
+          index++;
+        }
       }
-    });
-    document.addEventListener("mouseout", function (event) {
-      // Check if the target is an HTML element
-      if (event.target instanceof HTMLElement) {
-        // Save the current border style for later restoration
-        event.target._originalBorderStyle = event.target.style.border;
-
-        // Apply the new styles on hover
-          event.target.style.border = ""; // Change the color back to empty
-          event.target.style.backgroundColor = "";
-      }
-    });
-
-
-
-
+      // Append the node name and index to the path
+      const nodeName = element.nodeName.toLowerCase();
+      const id = element.id ? '[@id="' + element.id + '"]' : "";
+      path = "/" + nodeName + "[" + (index + 1) + "]" + id + path;
+      element = element.parentNode;
+    }
+    return path;
+  }
+}
