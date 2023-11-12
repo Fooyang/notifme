@@ -1,5 +1,6 @@
 
 var isButtonClicked = false;
+var xPathList = [];
 
 // Function to handle mouseover event
 function handleMouseover(event) {
@@ -34,7 +35,8 @@ function logButtonClick(event) {
   // Check if the target is an HTML element
   if (event.target instanceof HTMLElement) {
     // Log the button click along with its XPath
-    console.log("Button clicked at XPath: " + getXPath(event.target));
+      console.log("Button clicked at XPath: " + getXPath(event.target));
+      xPathList.push(getXPath(event.target));
   }
 }
 
