@@ -1,19 +1,15 @@
 <template>
-  <div class="search-term">
-    <button @click="getSearchTerm" class="search-term__btn">
-      Get Term
+  <div class="add">
+    <button @click="addToList" class="add-term__btn">
+      Add
     </button>
-
     <p>Your Term is: {{ searchTerm }}</p>
   </div>
 </template>
 
-<script>
-import { POPUP_SCRIPT_ID } from './../constants/from.modules'
-import { GET_SEARCH_TERM } from './../constants/actions'
-import { generateMessage } from './../utils/message'
-import { sendMessage } from './../utils/chrome'
 
+
+<script>
 export default {
   props: {
     tabId: {
@@ -26,7 +22,7 @@ export default {
     }
   },
   methods: {
-    async getSearchTerm() {
+    async addToList() {
       const message = generateMessage(POPUP_SCRIPT_ID, GET_SEARCH_TERM, {})
       this.searchTerm = await sendMessage(this.tabId, message)
     },
