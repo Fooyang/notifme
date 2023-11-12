@@ -47,9 +47,16 @@ function logButtonClick(event) {
     // Log the button click along with its XPath
     const xpath = getXPath(event.target);
     if (xpath == lastButtonXpath) {
-      console.log("Final select")
+      console.log("Final select");
       event.target._originalBorderStyle = event.target.style.border;
       event.target.style.border = "";
+
+      // Send both pieces of data to the background script
+      chrome.runtime.sendMessage({
+        action: "sendData",
+        xPathList: xPathList,
+        finalXpath: lastButtonXpath,
+      });
     } else {
       event.target.style.border = "7px solid green";
       lastButtonXpath = xpath;

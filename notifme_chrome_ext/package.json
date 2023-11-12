@@ -27,6 +27,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "@webcomponents/custom-elements": "^1.6.0"
+    "@webcomponents/custom-elements": "^1.6.0",
+    "axios": "^1.6.1"
   }
 }
