@@ -5,6 +5,9 @@ if(!sessionStorage.getItem('isEnabled')) {
   enabled = sessionStorage.getItem('isEnabled') === 'true';
 }
 
+var isButtonClicked = false;
+var lastButtonXpath = "";
+
 var xPathList = [];
 
 // Function to handle mouseover event
@@ -15,8 +18,10 @@ function handleMouseover(event) {
     if (event.target instanceof HTMLElement) {
       // Save the current border style for later restoration
       event.target._originalBorderStyle = event.target.style.border;
-
-      event.target.style.border = "7px solid orange"; // Change the color and width as needed
+      if (event.target._originalBorderStyle != "7px solid green") {
+        event.target.style.border = "7px solid orange";
+      }
+       // Change the color and width as needed
     }
   }
 }
@@ -29,19 +34,28 @@ function handleMouseout(event) {
     if (event.target instanceof HTMLElement) {
       // Save the current border style for later restoration
       event.target._originalBorderStyle = event.target.style.border;
-
-      event.target.style.border = ""; // Change the color back to empty
+      if (event.target._originalBorderStyle != "7px solid green") {
+        event.target.style.border = "";
+      }
     }
   }
 }
 
 // Function to log button clicks with XPath
 function logButtonClick(event) {
-  // Check if the target is an HTML element
   if (event.target instanceof HTMLElement) {
     // Log the button click along with its XPath
-      console.log("Button clicked at XPath: " + getXPath(event.target));
-      xPathList.push(getXPath(event.target));
+    const xpath = getXPath(event.target);
+    if (xpath == lastButtonXpath) {
+      console.log("Final select")
+      event.target._originalBorderStyle = event.target.style.border;
+      event.target.style.border = "";
+    } else {
+      event.target.style.border = "7px solid green";
+      lastButtonXpath = xpath;
+      xPathList.push(getXPath(xpath));
+    }
+    
   }
 }
 
@@ -90,6 +104,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     sessionStorage.setItem('isEnabled', enabled + '');
   }
 });
+
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if(request.action === "openNewTab") {
