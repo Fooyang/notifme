@@ -4,6 +4,7 @@ from scraper import navigate_to_element, find_element_by_xpath
 from gmail import send_email
 import os
 import pathlib
+from flask_cors import CORS
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] =  str(pathlib.Path().resolve()) + "/cred.json"
@@ -13,6 +14,10 @@ db = firestore.client(app)
 top_level_collection = "Users"
 
 app = Flask(__name__)
+
+@app.route('/healthz', methods=['GET'])
+def health():
+    return "", 200
 
 @app.route('/api/create-notif', methods=['POST'])
 def create_notif():
