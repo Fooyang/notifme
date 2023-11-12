@@ -42,8 +42,11 @@ pycparser==2.21
 pyee==11.0.1
 PyJWT==2.8.0
 pyparsing==3.1.1
+python-dotenv==1.0.0
+python-http-client==3.3.7
 requests==2.31.0
 rsa==4.9
+starkbank-ecdsa==2.2.0
 typing_extensions==4.8.0
 uritemplate==4.1.1
 urllib3==2.0.7
