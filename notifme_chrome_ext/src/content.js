@@ -98,8 +98,8 @@ function getXPath(element) {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "updateEditMode") {
-    isButtonClicked = request.editMode;
-    if (isButtonClicked) {
+    enabled = request.editMode;
+    if (enabled) {
       document.addEventListener("mouseover", handleMouseover);
       document.addEventListener("mouseout", handleMouseout);
       document.addEventListener("click", logButtonClick);
@@ -108,7 +108,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       document.removeEventListener("mouseout", handleMouseout);
       document.removeEventListener("click", logButtonClick);
     }
-    localStorage.setItem('isEnabled', enabled + '');
+    localStorage.setItem("isEnabled", enabled + "");
   }
 });
 
