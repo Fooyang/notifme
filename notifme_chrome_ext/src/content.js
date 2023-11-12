@@ -1,10 +1,16 @@
+var enabled;
+if(!localStorage.getItem('isEnabled')) {
+  enabled = false;
+} else {
+  enabled = localStorage.getItem('isEnabled') === 'true';
+}
 
-var isButtonClicked = false;
+chrome.runtime.sendMessage({ action: "updateVueData", data: enabled });
 
 // Function to handle mouseover event
 function handleMouseover(event) {
   // Check if the button has been clicked
-  if (isButtonClicked) {
+  if (enabled) {
     // Check if the target is an HTML element
     if (event.target instanceof HTMLElement) {
       // Save the current border style for later restoration
@@ -18,7 +24,7 @@ function handleMouseover(event) {
 // Function to handle mouseout event
 function handleMouseout(event) {
   // Check if the button has been clicked
-  if (isButtonClicked) {
+  if (enabled) {
     // Check if the target is an HTML element
     if (event.target instanceof HTMLElement) {
       // Save the current border style for later restoration
@@ -70,8 +76,8 @@ function getXPath(element) {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "updateEditMode") {
-    isButtonClicked = request.editMode;
-    if (isButtonClicked) {
+    enabled = request.editMode;
+    if (enabled) {
       document.addEventListener("mouseover", handleMouseover);
       document.addEventListener("mouseout", handleMouseout);
       document.addEventListener("click", logButtonClick);
@@ -80,6 +86,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       document.removeEventListener("mouseout", handleMouseout);
       document.removeEventListener("click", logButtonClick);
     }
+    localStorage.setItem('isEnabled', enabled + '');
   }
-  return true;
 });
