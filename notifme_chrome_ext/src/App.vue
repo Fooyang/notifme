@@ -66,12 +66,13 @@ export default {
     this.awaitReady();
   },
   created() {
-    const isEnabled = sessionStorage.getItem('isEnabled');
-    if (isEnabled) {
-      this.editMode = isEnabled === 'true';
-    } else {
-      this.editMode = false;
-    }
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.action === 'enabled') {
+        // Update the component's data with the received data
+        this.editMode = request.data;
+      }
+    });
+    chrome.runtime.sendMessage({ action: "getEnabled" });
     const email = localStorage.getItem('email');
     if (email) {
       this.email = email;
@@ -109,7 +110,7 @@ export default {
     },
     setEdit() {
       this.editMode = !this.editMode;
-      sessionStorage.setItem('isEnabled', this.editMode); 
+      // sessionStorage.setItem('isEnabled', this.editMode); 
       chrome.runtime.sendMessage({
         action: "updateEditMode",
         editMode: this.editMode,
@@ -121,6 +122,7 @@ export default {
     }
   },
 };
+
 </script>
 
 <style lang="scss">

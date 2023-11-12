@@ -105,10 +105,25 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 });
 
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if(request.action == "getEnabled") {
+    chrome.runtime.sendMessage({
+      action: "enabled",
+      data: enabled
+    });
+  }
+  console.log(enabled);
+});
+
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if(request.action === "openNewTab") {
     window.open(request.link, "_blank");
     return true;
   }
+})
+
+window.addEventListener('beforeunload', function (event) {
+  sessionStorage.clear();
+  chrome.runtime.sendMessage({ action: "getEnabled" });
 })
