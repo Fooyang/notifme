@@ -16,8 +16,18 @@
       <button @click="addLink">add</button>
       <button v-if="!editMode" @click="setEdit">start</button>
       <button v-else @click="setEdit">stop</button>
+      <button v-if="!done" @click="setDone">Done</button>
     </template>
     <h2 v-else class="app__title">Loading...</h2>
+    <div v-if="done">
+      <h1>Enter Reference Name</h1>
+      
+      <!-- Text box for entering the name of the link -->
+      <input v-model="linkName" placeholder="Enter link name" />
+
+      <!-- Save button -->
+      <button @click="saveLink">Save</button>
+    </div>
   </div>
 </template>
 
@@ -25,18 +35,24 @@
 import { domIsReady, getTabId } from "./utils/chrome";
 import SearchTerm from "./components/Add.vue";
 import SetGoogleBackground from "./components/SetGoogleBackground.vue";
+import Popup from "./components/Popup.vue";
+
+
 
 export default {
   components: {
     SearchTerm,
     SetGoogleBackground,
-  },
+    Popup,
+},
   data() {
     return {
       domIsReady: false,
       tabId: "",
       links: [],
       editMode: false,
+      done: false,
+      linkName: "",
     };
   },
   mounted() {
@@ -48,12 +64,29 @@ export default {
       this.domIsReady = true;
       this.tabId = await getTabId();
     },
+    saveLink() {
+      // Implement your logic to save the link with the entered name
+      // For example, you can emit an event or perform an action
+      // using this.linkName as the entered link name.
+      // For simplicity, I'll just log it to the console here.
+      this.links.push(this.linkName);
+      console.log("Link name to save:", this.linkName);
+    },
     addLink() {
       this.links.push("https://www.google.com/");
     },
     // fix this
     openLink(link) {
       chrome.runtime.sendMessage({ action: "openNewTab", link });
+    },
+    getDone() { 
+      chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
+      });
+    },
+    setDone() { 
+      console.log("Nothing");
+      this.done = !this.done;
     },
     setEdit() {
       this.editMode = !this.editMode;
