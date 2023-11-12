@@ -1,4 +1,5 @@
-var isButtonClicked = true
+
+var isButtonClicked = false;
 
 // Function to handle mouseover event
 function handleMouseover(event) {
@@ -36,13 +37,6 @@ function logButtonClick(event) {
     console.log("Button clicked at XPath: " + getXPath(event.target));
   }
 }
-document.addEventListener("click", function (event) {
-  // Log the click event along with its XPath
-  logButtonClick(event);
-});
-// Event listeners for mouseover and mouseout
-document.addEventListener("mouseover", handleMouseover);
-document.addEventListener("mouseout", handleMouseout);
 
 // Function to get XPath of an element
 function getXPath(element) {
@@ -73,3 +67,22 @@ function getXPath(element) {
     return path;
   }
 }
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  console.log("weird!");
+  if (request.action === "updateEditMode") {
+    isButtonClicked = request.editMode;
+    console.log("hello!");
+    if (isButtonClicked) {
+      document.addEventListener("mouseover", handleMouseover);
+      document.addEventListener("mouseout", handleMouseout);
+      document.addEventListener("click", logButtonClick);
+    } else {
+      document.removeEventListener("mouseover", handleMouseover);
+      document.removeEventListener("mouseout", handleMouseout);
+      document.removeEventListener("click", logButtonClick);
+    }
+  }
+  console.log(message);
+  return true;
+});

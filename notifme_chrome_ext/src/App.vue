@@ -11,6 +11,8 @@
         </v-row>
       </v-container>
       <button @click="addLink">add</button>
+      <button v-if="!editMode" @click="setEdit">start</button>
+      <button v-else @click="setEdit">stop</button>
     </template>
 
     <h2 v-else class="app__title"> Loading...</h2>
@@ -53,7 +55,8 @@ export default {
       chrome.runtime.sendMessage({ action: "openNewTab", link });
     },
     setEdit() {
-      editMode = !editMode;
+      this.editMode = !this.editMode;
+      chrome.runtime.sendMessage({ action: "updateEditMode", editMode: this.editMode});
     }
   },
 }
